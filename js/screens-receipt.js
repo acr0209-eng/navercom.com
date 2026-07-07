@@ -25,8 +25,10 @@ export function setupReceipt(sim) {
   // ----- 바텀시트 렌더 -----
 
   // 상태를 토글 모양 해석에만 맡기지 않고 '사용 중'/'꺼짐' 텍스트 뱃지로도 명시한다.
+  // 행 전체가 터치 영역 — 토글의 작은 스위치를 정확히 누르지 않아도 어디를 눌러도 토글된다.
   const signalRow = (id) => `
-    <div class="sig-row">
+    <div class="sig-row" data-action="rtoggle:${id}" role="switch"
+      aria-checked="${state.signals[id]}" aria-label="${SIGNAL_LABELS[id]}">
       <div class="sig-info">
         <div class="sig-top">
           <span class="sig-label">${SIGNAL_LABELS[id]}</span>

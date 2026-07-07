@@ -21,7 +21,8 @@ export class Sim {
 
     this.onAction('go', (arg) => this.go(arg));
     this.onAction('back', () => this.back());
-    this.onAction('noop', () => {});
+    // 장식용 요소(홈 탭 등)를 눌렀을 때도 무반응 대신 데모 안내를 띄운다.
+    this.onAction('noop', () => this.showDeadHint());
 
     // 프레임 안의 모든 클릭을 계수한다(배경 오조작 포함) — 실제 상호작용 비용 측정.
     this.root.addEventListener(
@@ -35,7 +36,13 @@ export class Sim {
 
     this.root.addEventListener('click', (e) => {
       const el = e.target.closest('[data-action]');
-      if (!el) return;
+      if (!el) {
+        // 동작이 없는 요소(상품, 검색바 등)를 눌렀을 때 아무 일도 없으면 '터치가
+        // 안 먹는다'고 느낀다 — 데모 한계임을 짧은 토스트로 알려준다.
+        // 열린 시트/모달/스낵바 내부의 여백 클릭에는 띄우지 않는다.
+        if (!e.target.closest('.sim-modal, .sim-sheet, .sim-snackbar')) this.showDeadHint();
+        return;
+      }
       const [verb, arg] = splitAction(el.dataset.action);
       const fn = this.actions[verb];
       if (fn) fn(arg, el);
@@ -129,6 +136,18 @@ export class Sim {
     o.appendChild(bar);
     clearTimeout(this.snackbarTimer);
     this.snackbarTimer = setTimeout(() => bar.remove(), CONFIG.snackbarMs);
+  }
+
+  // 동작하지 않는 요소를 눌렀을 때의 안내 토스트 (측정에는 영향 없음 — 클릭은 이미 계수됨)
+  showDeadHint() {
+    const o = this.overlays();
+    if (!o) return;
+    o.querySelector('.sim-deadhint')?.remove();
+    const hint = document.createElement('div');
+    hint.className = 'sim-deadhint';
+    hint.textContent = '이 요소는 데모에서 동작하지 않아요';
+    o.appendChild(hint);
+    setTimeout(() => hint.remove(), 1200);
   }
 
   // 조건 A의 확인 대화상자 (페이지 전환 없음 → 뎁스에 세지 않고 클릭만 계수)

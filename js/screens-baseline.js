@@ -9,6 +9,7 @@ export function setupBaseline(sim) {
   const { state } = sim;
   let editingRecent = false;   // '최근 본 상품' 편집 모드
   let dummyPersonalize = true; // 콘텐츠 개인화 마스터 토글(과업과 무관한 미끼)
+  let decoyKeywords = ['버티컬 마우스', '원목 가구', '재활 스트레칭']; // 과업 외 키워드도 실제로 삭제되게
 
   const list = (items) =>
     `<ul class="menu-list">${items
@@ -97,9 +98,13 @@ export function setupBaseline(sim) {
                  <button class="kw-del" data-action="ask-del-keyword">삭제</button></li>`
               : ''
           }
-          <li class="kw-row"><span>버티컬 마우스</span><button class="kw-del" data-action="noop">삭제</button></li>
-          <li class="kw-row"><span>원목 가구</span><button class="kw-del" data-action="noop">삭제</button></li>
-          <li class="kw-row"><span>재활 스트레칭</span><button class="kw-del" data-action="noop">삭제</button></li>
+          ${decoyKeywords
+            .map(
+              (k) =>
+                `<li class="kw-row"><span>${k}</span>
+                 <button class="kw-del" data-action="del-decoy:${k}">삭제</button></li>`
+            )
+            .join('')}
         </ul>
       </div>`,
     '관심 키워드 관리'
@@ -291,6 +296,21 @@ export function setupBaseline(sim) {
         <button class="modal-do" data-action="confirm-del-keyword">삭제</button>
       </div>`)
   );
+
+  // 과업과 무관한 키워드의 삭제도 실제로 동작 — 죽은 버튼이 없도록 한다.
+  sim.onAction('del-decoy', (name) =>
+    sim.showModal(`
+      <p>'${name}' 키워드를 삭제하면 관련 추천의 정확도가 낮아질 수 있습니다.<br>그래도 삭제하시겠어요?</p>
+      <div class="modal-btns">
+        <button class="modal-keep" data-action="close-modal">유지하기</button>
+        <button class="modal-do" data-action="confirm-del-decoy:${name}">삭제</button>
+      </div>`)
+  );
+  sim.onAction('confirm-del-decoy', (name) => {
+    decoyKeywords = decoyKeywords.filter((k) => k !== name);
+    sim.closeOverlays();
+    sim.render();
+  });
   sim.onAction('confirm-del-keyword', () => {
     sim.closeOverlays();
     sim.logger?.logToggle('search_wrist', false, sim.current());

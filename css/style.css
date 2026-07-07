@@ -262,14 +262,22 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .sim-sheet.enter { animation: sheet-up 0.18s ease-out; }
 @keyframes sheet-up { from { transform: translateY(30%); opacity: 0.5; } to { transform: none; opacity: 1; } }
 .sheet-head { display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
-.sheet-close { font-size: 14px; color: var(--ink-3); padding: 4px 6px; }
+.sheet-close {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; margin: -6px -8px -6px 0; border-radius: 50%;
+  font-size: 16px; color: var(--ink-2);
+}
+.sheet-close:hover { background: var(--bg); }
 .sheet-sub { font-size: 12.5px; color: var(--ink-3); margin: 2px 0 10px; }
 /* 신호 행 — 카드 배경으로 구획을 분리하고, ON/OFF 상태 뱃지를 텍스트로 명시해
-   토글을 굳이 눈으로 해석하지 않아도 현재 상태를 바로 읽을 수 있게 한다. */
+   토글을 굳이 눈으로 해석하지 않아도 현재 상태를 바로 읽을 수 있게 한다.
+   행 전체가 토글 터치 영역이다. */
 .sig-row {
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
   padding: 12px 12px; margin-bottom: 8px; border-radius: 10px; background: var(--bg);
+  cursor: pointer;
 }
+.sig-row:hover { background: #eef0f3; }
 .sig-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .sig-label { font-size: 13.5px; font-weight: 600; }
 .sig-state { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 8px; }
@@ -311,15 +319,25 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .modal-keep { background: var(--naver); color: #fff; }   /* 현행: 유지가 시각적으로 우세 */
 .modal-do { background: var(--bg); color: var(--ink-2); }
 
+/* 스낵바 — 하단 탭바(약 48px) 위에 띄워 탭 터치를 가리지 않는다 */
 .sim-snackbar {
-  position: absolute; left: 16px; right: 16px; bottom: 18px; z-index: 20;
+  position: absolute; left: 16px; right: 16px; bottom: 64px; z-index: 20;
   background: rgba(34, 34, 34, 0.95); color: #fff; border-radius: 10px;
   padding: 12px 16px; font-size: 13px;
   display: flex; justify-content: space-between; align-items: center;
   animation: snack-up 0.15s ease-out;
 }
 @keyframes snack-up { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
-.sim-snackbar button { color: #6db9ff; font-weight: 700; font-size: 13px; }
+.sim-snackbar button { color: #6db9ff; font-weight: 700; font-size: 13px; padding: 4px 6px; margin: -4px -6px; }
+
+/* 동작하지 않는 데모 요소 안내 토스트 — 터치를 가로채지 않는다 */
+.sim-deadhint {
+  position: absolute; left: 50%; bottom: 110px; transform: translateX(-50%);
+  z-index: 25; pointer-events: none; white-space: nowrap;
+  background: rgba(80, 80, 80, 0.92); color: #fff; border-radius: 16px;
+  padding: 7px 14px; font-size: 12px;
+  animation: snack-up 0.15s ease-out;
+}
 
 /* ---------- 결과 대시보드 ---------- */
 
