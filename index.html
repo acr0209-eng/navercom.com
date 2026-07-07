@@ -58,18 +58,24 @@
 
     <!-- 3. 시뮬레이션 -->
     <div id="screen-sim" class="hidden">
-      <div class="exp-bar">
-        <div>
-          <div class="task-name" id="bar-task"></div>
-          <div class="task-progress" id="bar-progress"></div>
+      <div class="sim-shell">
+        <div class="sim-side">
+          <div class="exp-bar">
+            <div>
+              <div class="task-name" id="bar-task"></div>
+              <div class="task-progress" id="bar-progress"></div>
+            </div>
+            <div class="exp-actions">
+              <span class="timer" id="bar-timer"></span>
+              <button class="giveup-btn" id="btn-giveup">과업 포기</button>
+            </div>
+          </div>
+          <div class="instruction-box" id="sim-instruction"></div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span class="timer" id="bar-timer"></span>
-          <button class="giveup-btn" id="btn-giveup">과업 포기</button>
+        <div class="phone-stage">
+          <div class="phone"><div id="sim-root"></div></div>
         </div>
       </div>
-      <div class="instruction-box" id="sim-instruction"></div>
-      <div class="phone"><div id="sim-root"></div></div>
     </div>
 
     <!-- 4. SEQ -->

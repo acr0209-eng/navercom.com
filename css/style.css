@@ -12,9 +12,13 @@
   --ink-2: #666;
   --ink-3: #999;
   --line: #e8e8e5;
+  --line-strong: #d8dad7;
   --bg: #f5f6f8;
+  --surface-alt: #fbfcfb;
   --card: #fff;
   --danger: #e5503c;
+  --shadow-sm: 0 8px 24px rgba(24, 32, 40, 0.06);
+  --shadow-md: 0 18px 45px rgba(24, 32, 40, 0.12);
 }
 
 body {
@@ -26,19 +30,29 @@ body {
 
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; }
+.panel p, .instruction-box, .muted-note, .prod-name, .ad-sub, .ai-a,
+.sheet-sub, .sig-preview, .sheet-footer small, .explain-panel {
+  word-break: keep-all;
+}
 
 /* ---------- 실험 러너 레이아웃 ---------- */
 
-.wrap { max-width: 520px; margin: 0 auto; padding: 20px 16px 48px; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 24px 18px 56px; }
 .hidden { display: none !important; }
 
-.exp-head { text-align: center; margin-bottom: 20px; }
-.exp-head h1 { font-size: 20px; }
+.exp-head { text-align: center; margin-bottom: 22px; }
+.exp-head h1 { font-size: 22px; letter-spacing: 0; }
 .exp-head .sub { color: var(--ink-2); font-size: 13px; }
 
+#screen-setup {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 14px; align-items: start;
+}
+#screen-setup .panel { margin-bottom: 0; }
+
 .panel {
-  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-  padding: 22px; margin-bottom: 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 22px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
 }
 .panel h2 { font-size: 16px; margin-bottom: 12px; }
 .panel p { font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
@@ -52,40 +66,54 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .radio-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .radio-row label {
   display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 400;
-  border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; cursor: pointer;
+  background: #fff;
 }
 .radio-row label:has(input:checked) { border-color: var(--naver); background: #f0fbf5; }
 
 .primary-btn {
-  display: block; width: 100%; padding: 13px; border-radius: 10px;
+  display: block; width: 100%; padding: 13px; border-radius: 8px;
   background: var(--naver); color: #fff; font-weight: 700; font-size: 15px;
+  min-height: 48px;
 }
 .primary-btn:hover { background: var(--naver-dark); }
 .ghost-btn {
-  display: block; width: 100%; padding: 12px; border-radius: 10px; margin-top: 8px;
+  display: block; width: 100%; padding: 12px; border-radius: 8px; margin-top: 8px;
   border: 1px solid var(--line); color: var(--ink-2); font-size: 14px; text-align: center;
-  text-decoration: none;
+  text-decoration: none; background: #fff;
 }
 .demo-row { display: flex; gap: 8px; }
 .demo-row .ghost-btn { flex: 1; }
 
+body:has(#screen-sim:not(.hidden)) .wrap { max-width: 980px; }
+
 /* 과업 진행 크롬 */
-.exp-bar {
-  background: var(--ink); color: #fff; border-radius: 12px;
-  padding: 12px 16px; margin-bottom: 12px;
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+.sim-shell {
+  display: grid; grid-template-columns: minmax(260px, 320px) minmax(360px, 420px);
+  gap: 22px; align-items: start; justify-content: center;
 }
-.exp-bar .task-name { font-size: 13px; font-weight: 600; }
-.exp-bar .task-progress { font-size: 11px; color: #bbb; }
+.sim-side { position: sticky; top: 20px; }
+.phone-stage { display: flex; justify-content: center; min-width: 0; }
+.exp-bar {
+  background: #202124; color: #fff; border-radius: 8px;
+  padding: 16px; margin-bottom: 12px;
+  display: flex; flex-direction: column; align-items: stretch; gap: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.exp-bar .task-name { font-size: 14px; font-weight: 700; }
+.exp-bar .task-progress { font-size: 12px; color: #c9c9c9; margin-top: 2px; }
+.exp-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .exp-bar .timer { font-variant-numeric: tabular-nums; font-size: 14px; font-weight: 700; }
 .exp-bar .timer.low { color: #ff8a80; }
 .giveup-btn {
-  border: 1px solid #555; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #ddd;
+  border: 1px solid #555; border-radius: 8px; padding: 7px 11px; font-size: 12px; color: #ddd;
+  min-width: 82px;
 }
 
 .instruction-box {
-  background: #fffbe8; border: 1px solid #f2e2a0; border-radius: 10px;
-  padding: 12px 14px; font-size: 13px; margin-bottom: 12px;
+  background: #fffdf3; border: 1px solid #eee2a7; border-left: 4px solid #e5b73b;
+  border-radius: 8px; padding: 14px 15px; font-size: 13px; margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
 }
 .instruction-box b { display: block; margin-bottom: 2px; }
 
@@ -105,8 +133,8 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 /* ---------- 시뮬레이션 폰 프레임 ---------- */
 
 .phone {
-  position: relative; background: #fff; border: 1px solid #ddd; border-radius: 24px;
-  overflow: hidden; height: 640px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  position: relative; background: #fff; border: 1px solid var(--line-strong); border-radius: 24px;
+  overflow: hidden; width: min(100%, 420px); height: 640px; box-shadow: var(--shadow-md);
   display: flex; flex-direction: column;
 }
 #sim-root { position: relative; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -118,30 +146,32 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .sim-back { font-size: 24px; line-height: 1; padding: 0 8px 2px 4px; color: var(--ink); }
 .sim-title { font-size: 15px; font-weight: 700; }
 
-.sim-screen { flex: 1; overflow-y: auto; background: var(--bg); }
+.sim-screen { flex: 1; overflow-y: auto; background: #f3f5f4; }
 
 /* 피드 */
-.feed { padding: 12px 12px 70px; display: flex; flex-direction: column; gap: 10px; }
+.feed { padding: 14px 14px 76px; display: flex; flex-direction: column; gap: 12px; }
 .searchbar {
   display: flex; align-items: center; gap: 10px; background: #fff;
-  border: 2px solid var(--naver); border-radius: 24px; padding: 9px 16px;
+  border: 2px solid var(--naver); border-radius: 24px; padding: 10px 16px;
+  box-shadow: 0 4px 12px rgba(3, 199, 90, 0.08);
 }
 .n-logo { color: var(--naver); font-weight: 900; font-size: 18px; }
 .search-hint { color: var(--ink-3); font-size: 13px; flex: 1; }
 
 .card {
   position: relative; background: var(--card); border: 1px solid var(--line);
-  border-radius: 14px; padding: 14px;
+  border-radius: 8px; padding: 15px; box-shadow: 0 3px 12px rgba(20, 28, 36, 0.04);
 }
-.card-tag { font-size: 11px; font-weight: 700; color: var(--ink-3); margin-bottom: 8px; }
+.card-tag { font-size: 11px; font-weight: 800; color: var(--ink-3); margin-bottom: 8px; letter-spacing: 0; }
 .ai-tag { color: #7a5af5; }
 .card.muted { background: #fafaf8; }
 .muted-note { font-size: 12.5px; color: var(--ink-3); padding: 4px 0; }
 .muted-note.in-ai { margin-top: 8px; color: #2b8a4b; }
 
-.prod { display: flex; gap: 10px; align-items: center; padding: 6px 0; }
+.prod { display: flex; gap: 10px; align-items: center; padding: 7px 0; }
+.prod + .prod { border-top: 1px solid var(--line); }
 .thumb {
-  width: 44px; height: 44px; border-radius: 10px; background: var(--bg);
+  width: 44px; height: 44px; border-radius: 8px; background: var(--bg);
   display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
 }
 .thumb.sm { width: 30px; height: 30px; font-size: 14px; border-radius: 8px; }
@@ -153,7 +183,10 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .ad-sub { color: var(--ink-2); font-size: 12.5px; }
 
 .ai-q { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-.ai-a { font-size: 13px; color: var(--ink-2); background: #f7f5ff; border-radius: 10px; padding: 10px 12px; }
+.ai-a {
+  font-size: 13px; color: var(--ink-2); background: #f7f5ff; border-radius: 8px;
+  padding: 11px 12px; border: 1px solid #ebe6ff;
+}
 
 .recent-row { display: flex; gap: 8px; overflow-x: auto; }
 .recent-chip {
@@ -171,17 +204,18 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 /* 영수증 진입 버튼 — 카드 하단 전체 너비로 상시 노출(제안서 3.2절 0클릭: 발견가능성).
    작은 회색 코너 아이콘 대신 색이 있는 라벨 버튼을 써서, 있는지도 몰랐다는 문제를 없앤다. */
 .receipt-btn {
-  display: flex; align-items: center; gap: 7px; width: 100%;
-  margin-top: 12px; padding-top: 11px; border-top: 1px dashed var(--line);
-  font-size: 13px; font-weight: 700; color: var(--naver-dark); text-align: left;
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  margin-top: 12px; padding: 10px 11px; border: 1px solid #cdeedc; border-radius: 8px;
+  background: #f0fbf5; font-size: 13px; font-weight: 800; color: var(--naver-dark);
+  text-align: left; min-height: 44px;
 }
-.receipt-btn:hover { color: var(--naver); }
+.receipt-btn:hover { color: var(--naver); background: #e7f8ef; border-color: #b9e7cf; }
 .receipt-btn .r-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px; border-radius: 50%; background: #eafaf1;
-  font-size: 12px; flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  border: 1px solid #d8f0e3; font-size: 13px; flex-shrink: 0;
 }
-.receipt-btn .r-chev { margin-left: auto; color: var(--ink-3); font-weight: 400; }
+.receipt-btn .r-chev { margin-left: auto; color: var(--naver-dark); font-weight: 800; }
 
 /* 메뉴/설정 화면 */
 .menu-list { list-style: none; background: #fff; }
@@ -256,37 +290,39 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 .sheet-dim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
 .sim-sheet {
   position: absolute; left: 0; right: 0; bottom: 0; background: #fff;
-  border-radius: 18px 18px 0 0; padding: 16px 16px 20px; max-height: 78%;
-  overflow-y: auto;
+  border-radius: 18px 18px 0 0; padding: 18px 16px 20px; max-height: 82%;
+  overflow-y: auto; box-shadow: 0 -16px 38px rgba(0, 0, 0, 0.16);
 }
 .sim-sheet.enter { animation: sheet-up 0.18s ease-out; }
 @keyframes sheet-up { from { transform: translateY(30%); opacity: 0.5; } to { transform: none; opacity: 1; } }
-.sheet-head { display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
 .sheet-close {
   display: flex; align-items: center; justify-content: center;
   width: 36px; height: 36px; margin: -6px -8px -6px 0; border-radius: 50%;
   font-size: 16px; color: var(--ink-2);
 }
 .sheet-close:hover { background: var(--bg); }
-.sheet-sub { font-size: 12.5px; color: var(--ink-3); margin: 2px 0 10px; }
+.sheet-sub { font-size: 12.5px; color: var(--ink-2); margin: 3px 0 12px; }
 /* 신호 행 — 카드 배경으로 구획을 분리하고, ON/OFF 상태 뱃지를 텍스트로 명시해
    토글을 굳이 눈으로 해석하지 않아도 현재 상태를 바로 읽을 수 있게 한다.
    행 전체가 토글 터치 영역이다. */
 .sig-row {
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  padding: 12px 12px; margin-bottom: 8px; border-radius: 10px; background: var(--bg);
+  padding: 13px 12px; margin-bottom: 9px; border-radius: 8px; background: var(--surface-alt);
+  border: 1px solid var(--line);
   cursor: pointer;
 }
-.sig-row:hover { background: #eef0f3; }
+.sig-row:hover { background: #f3f7f5; border-color: #d5ecde; }
+.sig-info { min-width: 0; flex: 1; }
 .sig-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-.sig-label { font-size: 13.5px; font-weight: 600; }
+.sig-label { font-size: 13.5px; font-weight: 800; line-height: 1.35; }
 .sig-state { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 8px; }
 .sig-state.on { background: #eafaf1; color: var(--naver-dark); }
 .sig-state.off { background: #ececea; color: var(--ink-3); }
-.sig-preview { margin-top: 3px; }
+.sig-preview { margin-top: 4px; line-height: 1.4; }
 .sheet-divider { height: 6px; }
 .sheet-action-btn {
-  display: block; width: 100%; margin-top: 4px; padding: 13px; border-radius: 10px;
+  display: block; width: 100%; margin-top: 4px; padding: 13px; border-radius: 8px;
   border: 1px solid var(--danger); color: var(--danger); font-weight: 700; font-size: 14px;
 }
 .sheet-done { font-size: 13px; color: #2b8a4b; padding: 12px 0 2px; text-align: center; }
@@ -297,32 +333,32 @@ small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; 
 /* 시트 안의 진입점(전체 이용내역·설명 요청)을 눈에 띄는 칩 버튼으로 — 텍스트 링크는
    바텀시트 안에서 놓치기 쉽다는 피드백을 반영해 배경·패딩을 준 배지 형태로 강화. */
 .sheet-link {
-  display: inline-flex; align-items: center; gap: 4px; align-self: flex-start;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px; align-self: stretch;
   font-size: 13px; font-weight: 700; color: var(--naver-dark);
-  background: #eafaf1; border-radius: 20px; padding: 9px 16px;
+  background: #eafaf1; border-radius: 8px; padding: 11px 16px;
 }
 .sheet-link:hover { background: #dcf4e6; }
 .sheet-link.explain { background: var(--bg); color: var(--ink-2); margin: 6px 0 2px; }
 .explain-panel {
   font-size: 12.5px; color: var(--ink-2); background: var(--bg);
-  border-radius: 10px; padding: 10px 12px; margin-top: 8px;
+  border-radius: 8px; padding: 10px 12px; margin-top: 8px;
 }
 
 .sim-modal-dim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
 .sim-modal {
   position: absolute; left: 24px; right: 24px; top: 50%; transform: translateY(-50%);
-  background: #fff; border-radius: 14px; padding: 20px 18px; font-size: 14px;
+  background: #fff; border-radius: 8px; padding: 20px 18px; font-size: 14px;
   text-align: center;
 }
 .modal-btns { display: flex; gap: 8px; margin-top: 16px; }
-.modal-btns button { flex: 1; padding: 11px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+.modal-btns button { flex: 1; padding: 11px; border-radius: 8px; font-weight: 600; font-size: 14px; }
 .modal-keep { background: var(--naver); color: #fff; }   /* 현행: 유지가 시각적으로 우세 */
 .modal-do { background: var(--bg); color: var(--ink-2); }
 
 /* 스낵바 — 하단 탭바(약 48px) 위에 띄워 탭 터치를 가리지 않는다 */
 .sim-snackbar {
   position: absolute; left: 16px; right: 16px; bottom: 64px; z-index: 20;
-  background: rgba(34, 34, 34, 0.95); color: #fff; border-radius: 10px;
+  background: rgba(34, 34, 34, 0.95); color: #fff; border-radius: 8px;
   padding: 12px 16px; font-size: 13px;
   display: flex; justify-content: space-between; align-items: center;
   animation: snack-up 0.15s ease-out;
@@ -430,7 +466,28 @@ body.dash-body { background: #f9f9f7; }
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); max-width: 260px;
 }
 
+@media (max-width: 860px) {
+  body:has(#screen-sim:not(.hidden)) .wrap { max-width: 520px; }
+  .sim-shell { grid-template-columns: 1fr; gap: 14px; }
+  .sim-side { position: static; }
+  .phone { margin: 0 auto; }
+}
+
+@media (max-width: 720px) {
+  .wrap { max-width: 520px; }
+  #screen-setup { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 560px) {
-  .wrap { padding: 12px 10px 40px; }
+  .wrap { padding: 14px 10px 40px; }
+  .exp-head h1 { font-size: 20px; }
+  .demo-row { flex-direction: column; gap: 0; }
+  .exp-bar { padding: 14px; }
   .phone { height: 600px; border-radius: 18px; }
+  .feed { padding: 12px 12px 74px; }
+  .card { padding: 13px; }
+  .receipt-btn { font-size: 12.5px; }
+  .sim-sheet { padding: 16px 14px 18px; }
+  .sig-row { gap: 10px; padding: 12px 10px; }
+  .toggle { width: 44px; height: 26px; }
 }
