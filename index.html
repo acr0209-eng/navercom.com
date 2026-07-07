@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 정보 영수증 — PFI 실험</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%BE%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="exp-head">
+      <h1>내 정보 영수증 — 권리 행사 마찰(PFI) 실험</h1>
+      <div class="sub">현행 목적지형 vs 제안 접점형 · 과업 5종 A/B 비교</div>
+    </div>
+
+    <!-- 1. 설정 -->
+    <div id="screen-setup">
+      <div class="panel">
+        <h2>실험 시작</h2>
+        <p>참가자는 두 가지 인터페이스에서 동일한 프라이버시 과업 5종을 수행합니다.
+        클릭 수·화면 이동·소요 시간·성공 여부가 자동 기록되며, 과업마다 난이도 1문항(SEQ)에 답합니다.</p>
+        <div class="field">
+          <label for="pid">참가자 ID</label>
+          <input type="text" id="pid" placeholder="예: P01" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label>인터페이스 순서 (카운터밸런싱)</label>
+          <div class="radio-row">
+            <label><input type="radio" name="order" value="auto" checked /> 자동 교대</label>
+            <label><input type="radio" name="order" value="AB" /> 현행 → 제안</label>
+            <label><input type="radio" name="order" value="BA" /> 제안 → 현행</label>
+          </div>
+        </div>
+        <button class="primary-btn" id="btn-start">실험 시작</button>
+      </div>
+      <div class="panel">
+        <h2>데모 · 결과</h2>
+        <p>측정 없이 두 인터페이스를 자유롭게 둘러보거나, 수집된 결과를 확인합니다.</p>
+        <div class="demo-row">
+          <button class="ghost-btn" id="btn-demo-a">현행(A) 둘러보기</button>
+          <button class="ghost-btn" id="btn-demo-b">영수증(B) 둘러보기</button>
+        </div>
+        <a class="ghost-btn" href="results.html">📊 결과 대시보드 열기</a>
+      </div>
+    </div>
+
+    <!-- 2. 과업 안내 -->
+    <div id="screen-briefing" class="hidden">
+      <div class="panel">
+        <p id="briefing-progress" class="task-progress"></p>
+        <h2 id="briefing-title"></h2>
+        <p id="briefing-text"></p>
+        <p id="briefing-switch" class="hidden"><b>이번에는 다른 인터페이스로 같은 유형의 과업을 수행합니다.</b></p>
+        <button class="primary-btn" id="btn-begin-task">과업 시작</button>
+      </div>
+    </div>
+
+    <!-- 3. 시뮬레이션 -->
+    <div id="screen-sim" class="hidden">
+      <div class="exp-bar">
+        <div>
+          <div class="task-name" id="bar-task"></div>
+          <div class="task-progress" id="bar-progress"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="timer" id="bar-timer"></span>
+          <button class="giveup-btn" id="btn-giveup">과업 포기</button>
+        </div>
+      </div>
+      <div class="instruction-box" id="sim-instruction"></div>
+      <div class="phone"><div id="sim-root"></div></div>
+    </div>
+
+    <!-- 4. SEQ -->
+    <div id="screen-seq" class="hidden">
+      <div class="panel">
+        <div class="result-banner">
+          <div class="big" id="seq-icon"></div>
+          <h2 id="seq-result"></h2>
+        </div>
+        <p style="text-align:center;">방금 수행한 과업은 전반적으로 얼마나 어려웠습니까?</p>
+        <div class="seq-scale" id="seq-scale"></div>
+        <div class="seq-ends"><span>1 · 매우 쉬웠다</span><span>7 · 매우 어려웠다</span></div>
+      </div>
+    </div>
+
+    <!-- 5. 완료 -->
+    <div id="screen-done" class="hidden">
+      <div class="panel" style="text-align:center;">
+        <div class="result-banner"><div class="big">🎉</div><h2>모든 과업이 끝났습니다</h2></div>
+        <p>결과가 이 브라우저에 저장되었습니다. 수고하셨습니다!</p>
+        <a class="primary-btn" style="text-decoration:none;" href="results.html">📊 결과 대시보드 보기</a>
+        <button class="ghost-btn" id="btn-restart">처음 화면으로</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
