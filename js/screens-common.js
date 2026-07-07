@@ -145,18 +145,21 @@ function splitAction(action) {
 }
 
 // ---------- 공용 피드 화면 ----------
-// withReceipts=true 면 개인화 결과물마다 ⓘ 영수증 아이콘을 붙인다(조건 B).
+// withReceipts=true 면 개인화 결과물마다 카드 하단에 영수증 진입 버튼을 붙인다(조건 B).
+// 작은 코너 아이콘 대신 카드 전체 너비의 라벨 버튼을 써서 항상 같은 위치(카드 맨 아래)에서
+// 눈에 띄게 노출한다 — 제안서 3.2절 0클릭 단계의 '발견가능성' 원칙.
 
 export function renderFeed({ state, withReceipts }) {
   const s = state.signals;
-  const receipt = (sheetId) =>
+  const receipt = (sheetId, label) =>
     withReceipts
-      ? `<button class="receipt-icon" data-action="sheet:${sheetId}" aria-label="내 정보 영수증">ⓘ</button>`
+      ? `<button class="receipt-btn" data-action="sheet:${sheetId}">
+           <span class="r-badge">🧾</span>${label}<span class="r-chev">›</span>
+         </button>`
       : '';
 
   const recoCard1 = s.search_wrist
     ? `<div class="card reco-card">
-         ${receipt('reco')}
          <div class="card-tag">쇼핑 추천</div>
          <div class="prod"><div class="thumb">🛍️</div>
            <div><div class="prod-name">손목 보호대 슬림핏 (양손용)</div>
@@ -164,6 +167,7 @@ export function renderFeed({ state, withReceipts }) {
          <div class="prod"><div class="thumb">🛍️</div>
            <div><div class="prod-name">의료용 손목 압박밴드 2매</div>
            <div class="prod-price">9,800원</div></div></div>
+         ${receipt('reco', '이 추천에 사용된 내 정보 보기')}
        </div>`
     : `<div class="card reco-card muted">
          <div class="card-tag">쇼핑 추천</div>
@@ -172,11 +176,11 @@ export function renderFeed({ state, withReceipts }) {
 
   const recoCard2 = s.shopping_click
     ? `<div class="card reco-card">
-         ${receipt('reco')}
          <div class="card-tag">함께 본 상품</div>
          <div class="prod"><div class="thumb">🖱️</div>
            <div><div class="prod-name">무선 버티컬 마우스 (손목 편한)</div>
            <div class="prod-price">29,800원</div></div></div>
+         ${receipt('reco', '이 추천에 사용된 내 정보 보기')}
        </div>`
     : `<div class="card reco-card muted">
          <div class="card-tag">함께 본 상품</div>
@@ -185,10 +189,10 @@ export function renderFeed({ state, withReceipts }) {
 
   const adCard = s.personalized_ads
     ? `<div class="card ad-card">
-         ${receipt('ad')}
          <div class="card-tag">AD · 맞춤형 광고</div>
          <div class="ad-body">🎯 <b>손목 보호대 최대 40% 특가</b><br>
          <span class="ad-sub">지금 관심 있는 상품, 오늘만 이 가격</span></div>
+         ${receipt('ad', '이 광고에 사용된 내 정보 보기')}
        </div>`
     : `<div class="card ad-card muted">
          <div class="card-tag">AD · 일반 광고</div>
@@ -197,33 +201,26 @@ export function renderFeed({ state, withReceipts }) {
        </div>`;
 
   const aiCard = `<div class="card ai-card">
-      ${receipt('ai')}
       <div class="card-tag ai-tag">AI 브리핑</div>
       <div class="ai-q">“손목 통증에 좋은 스트레칭 알려줘”</div>
       <div class="ai-a">최근 검색하신 손목 보호와 관련해, 손목 굽힘근 스트레칭 3가지를 추천드려요.
       ${s.location ? '현재 계신 지역의 재활의학과 정보도 함께 참고했어요.' : ''}</div>
       ${
-        withReceipts
-          ? `<div class="ai-actions">
-               <button class="ai-chip" data-action="sheet:ai">이 답변에 참고된 내 정보</button>
-             </div>`
-          : ''
-      }
-      ${
         s.ai_training
           ? ''
           : '<div class="muted-note in-ai">✓ 내 대화는 AI 학습에 사용되지 않습니다</div>'
       }
+      ${receipt('ai', '이 답변에 참고된 내 정보 보기')}
     </div>`;
 
   const recent =
     state.recentProducts.length > 0
       ? `<div class="card recent-card">
-           ${receipt('recent')}
            <div class="card-tag">최근 본 상품</div>
            <div class="recent-row">${state.recentProducts
              .map((p) => `<div class="recent-chip"><div class="thumb sm">📦</div>${p.name}</div>`)
              .join('')}</div>
+           ${receipt('recent', '최근 본 상품에 대한 내 정보 보기')}
          </div>`
       : `<div class="card recent-card muted">
            <div class="card-tag">최근 본 상품</div>

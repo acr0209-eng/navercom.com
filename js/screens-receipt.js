@@ -1,6 +1,6 @@
 // 조건 B — 제안 접점형 통제 레이어 '내 정보 영수증'.
 // 제안서 3.2절의 3클릭 흐름:
-//   0클릭: 개인화 결과물마다 ⓘ 아이콘 상시 노출 (발견가능성)
+//   0클릭: 개인화 결과물마다 영수증 진입 버튼(카드 하단 전체 너비, 상시 노출)
 //   1클릭: 바텀시트로 영수증 열림, 페이지 이동 없음 (근접성·인지부하)
 //   2클릭: 신호 토글 OFF + "끄면 이렇게 달라집니다" 미리보기 (즉각 피드백)
 //   3클릭: '적용됨 · 실행 취소' 스낵바 5초 (가역성)
@@ -24,10 +24,16 @@ export function setupReceipt(sim) {
 
   // ----- 바텀시트 렌더 -----
 
+  // 상태를 토글 모양 해석에만 맡기지 않고 '사용 중'/'꺼짐' 텍스트 뱃지로도 명시한다.
   const signalRow = (id) => `
     <div class="sig-row">
       <div class="sig-info">
-        <span class="sig-label">${SIGNAL_LABELS[id]}</span>
+        <div class="sig-top">
+          <span class="sig-label">${SIGNAL_LABELS[id]}</span>
+          <span class="sig-state ${state.signals[id] ? 'on' : 'off'}">${
+            state.signals[id] ? '사용 중' : '꺼짐'
+          }</span>
+        </div>
         <small class="sig-preview">${
           state.signals[id] ? SIGNAL_PREVIEWS[id] : '✓ 사용이 중지되었습니다'
         }</small>
